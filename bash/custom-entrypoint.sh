@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# ensure that the aws cli is installed
+chmod +x /usr/local/bin/install-aws-cli.sh
+/usr/local/bin/install-aws-cli.sh
+
 # pull a back up from the bucket
 chmod +x /usr/local/bin/pull-backup.sh
 /usr/local/bin/pull-backup.sh
