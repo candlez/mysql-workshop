@@ -9,17 +9,21 @@ TEMP_DIR="/tmp/s3-push-backup"
 
 mkdir -p $TEMP_DIR
 
-TIMESTAMP=$(date +"%Y-%m-%d")
+TIMESTAMP=$(date +"%Y-%m-%dT%H-%M-%S")
 BACKUP_NAME="$MYSQL_DATABASE-backup-$TIMESTAMP"
 
-if mysqldump -u root -p "$MYSQL_ROOT_PASSWORD" $MYSQL_DATABASE > "$TEMP_DIR/$BACKUP_NAME.sql"; then
+export MYSQL_PWD=$MYSQL_ROOT_PASSWORD
+
+if mysqldump -u root --all-databases > "$TEMP_DIR/$BACKUP_NAME.sql"; then
   echo "Backup created successfully: $BACKUP_NAME.sql"
+  unset MYSQL_PWD
 else
   echo "Backup failed!"
+  unset MYSQL_PWD
   exit 1
 fi
 
-tar -cvf "$TEMP_DIR/$BACKUP_NAME.tar" -C $TEMP_DIR "$TEMP_DIR/$BACKUP_NAME.sql"
+tar -cvf "$TEMP_DIR/$BACKUP_NAME.tar" -C $TEMP_DIR "$BACKUP_NAME.sql"
 
 aws s3 cp "$TEMP_DIR/$BACKUP_NAME.tar" s3://$S3_BUCKET/
 
