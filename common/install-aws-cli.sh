@@ -1,6 +1,6 @@
 #!/bin/bash
 
-microdnf install -y unzip && microdnf clean all
+# unzip has to be installed in the Dockerfile
  
 # install AWS CLI if not already installed
 if ! command -v aws &> /dev/null; then
