@@ -1,10 +1,8 @@
 FROM mysql:8.0.35
 
-RUN microdnf install -y unzip && microdnf clean all
-RUN curl -s "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "/tmp/awscliv2.zip" && \
-    unzip -qq /tmp/awscliv2.zip -d /tmp && \
-    /tmp/aws/install && \
-    rm -rf /tmp/awscliv2.zip /tmp/aws
+RUN microdnf install -y python3-pip && microdnf clean all
+
+RUN pip3 install awscli --upgrade
 
 COPY common/push-backup.sh /usr/local/bin/
 

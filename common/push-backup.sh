@@ -25,8 +25,6 @@ fi
 
 tar -cvf "$TEMP_DIR/$BACKUP_NAME.tar" -C "$TEMP_DIR" "$BACKUP_NAME.sql"
 
-aws s3 cp "$TEMP_DIR/$BACKUP_NAME.tar" "s3://$S3_BUCKET/"
-
-rm -rf "$TEMP_DIR"
+aws s3 cp "$TEMP_DIR/$BACKUP_NAME.tar" "s3://$S3_BUCKET/" --cli-connect-timeout 10 --cli-read-timeout 20
 
 echo "Database backup sent to S3: $BACKUP_NAME.tar"
