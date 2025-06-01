@@ -23,8 +23,8 @@ else
   exit 1
 fi
 
-tar -cvf "$TEMP_DIR/$BACKUP_NAME.tar" -C "$TEMP_DIR" "$BACKUP_NAME.sql"
-
-aws s3 cp "$TEMP_DIR/$BACKUP_NAME.tar" "s3://$S3_BUCKET/" --cli-connect-timeout 10 --cli-read-timeout 20
-
-echo "Database backup sent to S3: $BACKUP_NAME.tar"
+if tar -cvf "$TEMP_DIR/$BACKUP_NAME.tar" -C "$TEMP_DIR" "$BACKUP_NAME.sql" && aws s3 cp "$TEMP_DIR/$BACKUP_NAME.tar" "s3://$S3_BUCKET/" --cli-connect-timeout 10 --cli-read-timeout 20; then
+  echo "Database backup sent to S3: $BACKUP_NAME.tar"
+else
+  echo "Database backup failed to be sent to S3"
+fi
