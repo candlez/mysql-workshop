@@ -11,6 +11,8 @@ if [ "$1" = "main" ]; then
     docker buildx build --platform linux/arm64 --push -f main/Dockerfile -t thomasmcnamara7/custom-mysql .
 elif [ "$1" = "backup" ]; then
     docker buildx build --platform linux/arm64 --push -f backup/Dockerfile -t thomasmcnamara7/custom-mysql-backup .
+elif [ "$1" = "replicate" ]; then
+    docker buildx build --platform linux/arm64 --push -f replicate/Dockerfile -t thomasmcnamara7/custom-mysql-replicate .
 else
     echo "image not recognized"
     exit 1
